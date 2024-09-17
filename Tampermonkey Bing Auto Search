@@ -1,18 +1,20 @@
 // ==UserScript==
 // @name         Auto Bing Search (20-60 Suchen)
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.4
 // @description  Führt zwischen 20 und 60 zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 2 und 5 Sekunden, um Blockierungen zu vermeiden.
 // @author       Redhead420
 // @include      *bing.com/*
 // @grant        none
-// @updateURL   https://raw.githubusercontent.com/DeinGitHubBenutzername/DeinRepoName/main/auto-bing-search.user.js
-// @downloadURL https://raw.githubusercontent.com/DeinGitHubBenutzername/DeinRepoName/main/auto-bing-search.user.js
+// @updateURL   https://raw.githubusercontent.com/Redheadx420/Bing-Auto-Search/main/Tampermonkey%20Bing%20Auto%20Search
+// @downloadURL https://raw.githubusercontent.com/Redheadx420/Bing-Auto-Search/main/Tampermonkey%20Bing%20Auto%20Search
 
 // ==/UserScript==
 
 (function() {
     'use strict';
+
+console.log("Version 1.1: Skript erfolgreich aktualisiert!");
 
     // Liste von zufälligen Suchanfragen
     const searchTerms = [
