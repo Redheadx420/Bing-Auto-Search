@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         Auto Bing Search (20-60 Suchen)
+// @name         Auto Bing Search 
 // @namespace    http://tampermonkey.net/
-// @version      1.4
-// @description  Führt zwischen 20 und 60 zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 2 und 5 Sekunden, um Blockierungen zu vermeiden.
-// @author       Redhead420
+// @version      1.5
+// @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 2 und 5 Sekunden, um Blockierungen zu vermeiden.
+// @author       Redheadx420
 // @include      *bing.com/*
 // @grant        none
 // @updateURL   https://raw.githubusercontent.com/Redheadx420/Bing-Auto-Search/main/Tampermonkey%20Bing%20Auto%20Search
@@ -14,22 +14,76 @@
 (function() {
     'use strict';
 
-console.log("Version 1.1: Skript erfolgreich aktualisiert!");
+    console.log("Version 1.5: Skript erfolgreich aktualisiert!");
 
-    // Liste von zufälligen Suchanfragen
+    // Liste von 250 verschiedenen Suchanfragen
     const searchTerms = [
-        "Auto", "Wetter", "Sportnachrichten", "Technologie Trends", "Filme 2024",
-        "Was ist künstliche Intelligenz", "Urlaub in Deutschland", "Elektroauto Vorteile",
-        "Fußball Bundesliga Ergebnisse", "Bestes Smartphone 2024", "Neue Computerspiele",
-        "Elektromobilität", "SpaceX Nachrichten", "Roboter in der Industrie", "Erneuerbare Energien",
-        "Kryptowährungen 2024", "AI und Arbeitsmarkt", "Formula 1 Ergebnisse", "Zukunft der Automobilbranche",
-        "Deutsche Sehenswürdigkeiten", "Online-Shopping Trends", "Gaming PCs", "Digitalisierung in Deutschland",
-        "Top Filme des Jahres", "Musiktrends 2024", "Nachhaltige Mode", "Technologie-Investitionen",
-        "Blockchain Anwendungen", "Tesla Aktien", "E-Mobilität in Europa", "Zukunft des Arbeitsmarkts"
+        "Aktuelle Nachrichten", "Wettervorhersage", "Neueste Filme", "Top Bücher", "Beliebte Musik",
+        "Reiseziele 2024", "Essen Rezepte", "Gesundheitstipps", "Technologie Trends", "Sport Ergebnisse",
+        "Wirtschaft Nachrichten", "Politik Updates", "Automobil Neuheiten", "Smartphone Vergleiche", "Kunst Veranstaltungen",
+        "Energieeffizienz", "Mode Trends", "Wissenschaft Entdeckungen", "Berufliche Weiterbildung", "Blockchain Technologie",
+        "Digitale Innovationen", "Nachhaltige Produkte", "Psychologische Studien", "Haustierpflege", "DIY Projekte",
+        "Gartenarbeit Tipps", "Finanzplanung", "Immobilien Markt", "Online Lernen", "Spiele Bewertungen",
+        "Freizeitaktivitäten", "Historische Ereignisse", "Kulinarische Abenteuer", "Fitness Training", "Umweltschutz",
+        "Mode für Männer", "Mode für Frauen", "Essen aus aller Welt", "Berühmte Persönlichkeiten", "Internationale Küche",
+        "Forschungsprojekte", "Kulturelle Events", "Filmkritiken", "Musik Festivals", "Technologische Gadgets",
+        "Reiseangebote", "Karriere Tipps", "Fahrzeugbewertungen", "Weltgeschichte", "Gesundheitsprodukte",
+        "Energiequellen", "Wirtschaftskrisen", "Politische Analysen", "Wirtschaftsprognosen", "Bildungssysteme",
+        "Wirtschaftsindikatoren", "Gesundheitswesen", "Modetrends", "Psychologische Gesundheit", "Hobbyideen",
+        "Technologische Fortschritte", "Architektur Projekte", "Filme des Jahrzehnts", "Popkultur Trends", "Unterhaltung",
+        "Sprachen lernen", "Lebensmittelpreise", "Kunstgeschichte", "Bildende Kunst", "Digitales Marketing",
+        "Internet Sicherheit", "Datenschutz", "Zukunft der Arbeit", "Schulbildung", "Universitätsprogramme",
+        "Städtereisen", "Ländliche Erholung", "Naturfotografie", "Umweltverschmutzung", "Erneuerbare Energien",
+        "Gesunde Ernährung", "Meditationstechniken", "Yoga Übungen", "Zukunft der Mobilität", "Geschäftsideen",
+        "Gastronomie Trends", "Wohntrends", "Reiseberichte", "Technologische Entwicklungen", "Internationale Politik",
+        "Sicherheitsmaßnahmen", "Erfindungen des 21. Jahrhunderts", "Fortschrittliche Technologien", "Kulturelle Unterschiede",
+        "Landwirtschaftliche Innovationen", "Chemie Forschung", "Mathematik Anwendungen", "Psychologische Therapien",
+        "Kriminalpsychologie", "Ökonomische Modelle", "Sustainable Living", "Fair Trade Produkte", "Medienberichte",
+        "Historische Stätten", "Weltreligionen", "Innovationsmanagement", "Marktforschung", "Computer Wissenschaft",
+        "Neurologie", "Künstliche Intelligenz", "Maschinenlernen", "Cloud-Technologien", "E-Commerce",
+        "Büroorganisation", "Wirtschaftspolitik", "Bildungstechnologien", "Energiesparmaßnahmen", "Moderne Kunst",
+        "Gesellschaftliche Trends", "Lebensstil Tipps", "Gesundheitsüberwachung", "Fitnessgeräte", "Gesundheitsgefahren",
+        "Ernährungsberatung", "Verbraucherrechte", "Freizeitangebote", "Kunst & Kultur", "Naturwissenschaften",
+        "Verkehrsplanung", "Verbrauchsverhalten", "Künstlerische Ausdrucksformen", "Forschungsergebnisse", "Bildungsinitiativen",
+        "Fremdsprachen", "Handwerkskunst", "Erlebnisreisen", "Gesellschaftskritik", "Literaturanalysen",
+        "Wirtschaftsstrategien", "Technologische Ausrüstungen", "Umweltstudien", "Kunsttechniken", "Reiseberichte",
+        "Wissenschaftliche Entdeckungen", "Naturerlebnisse", "Kulturelle Vielfalt", "Weltwirtschaft", "Soziale Medien",
+        "Webentwicklung", "Designtrends", "Medizinische Innovationen", "Telekommunikation", "Infrastrukturprojekte",
+        "Medienproduktion", "Nachhaltige Entwicklung", "Wirtschaftliche Entwicklung", "Digitalisierung", "Kulturelles Erbe",
+        "Medizinische Forschungen", "Neurologische Studien", "Forschungsprojekte", "Ländliche Entwicklung", "Städtische Entwicklung",
+        "Infrastrukturtechnologien", "Artenvielfalt", "Ökologische Nachhaltigkeit", "Stadtplanung", "Kulturelle Einrichtungen",
+        "Energiepolitik", "Erneuerbare Technologien", "Digitales Lernen", "Gesundheitsdaten", "Historische Forschungen",
+        "Innovative Lösungen", "Wirtschaftsanalyse", "Kunstveranstaltungen", "Futuristische Designs", "Wissenschaftliche Forschung",
+        "Medizinische Geräte", "Gesellschaftliche Herausforderungen", "Erlebnisberichte", "Soziale Entwicklungen", "Bildungsprojekte",
+        "Moderne Architektur", "Reiseplanung", "Digitale Trends", "Erneuerbare Ressourcen", "Technologie-Kunst",
+        "Wirtschaftsplanung", "Kunststudien", "Wissenschaftliche Erkenntnisse", "Medienberichterstattung", "Technologieanwendungen",
+        "Sozialwissenschaftliche Forschung", "Biotechnologie", "Gesundheitsberatung", "Digitale Medien", "Kulturelle Angebote",
+        "Reiseberichte", "Innovationsstrategien", "Forschungsberichte", "Unternehmensführung", "Umweltforschung", "Bildungsreformen",
+        "Stadtentwicklung", "Landnutzung", "Gesundheitsinnovation", "Energiekonzepte", "Medieninformatik", "Bildungsforschung",
+        "Innovationsentwicklung", "Wissenschaftliche Studien", "Digitale Anwendungen", "Kulturprojekte", "Reiseziele",
+        "Veranstaltungskalender", "Bildungstechnologien", "Gesellschaftliche Analysen", "Medieninhalte", "Digitales Design",
+        "Technologische Entdeckungen", "Marktanalysen", "Stadtplanung", "Verbrauchertrends", "Bildungspolitik", "Forschungsinitiativen"
     ];
 
-    // Anzahl der durchzuführenden Suchen (zufällig zwischen 20 und 60)
-    const searchCount = Math.floor(Math.random() * 41) + 20; // 20 bis 60
+    // Anzahl der durchzuführenden Suchen
+    const searchCount = 60;
+
+    // Sicherstellen, dass der Pool genügend Suchbegriffe enthält
+    if (searchTerms.length < searchCount) {
+        throw new Error("Der Pool an Suchbegriffen ist kleiner als die Anzahl der durchzuführenden Suchen.");
+    }
+
+    // Shuffle-Funktion zum Mischen des Arrays
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Mische die Suchbegriffe und wähle die ersten `searchCount` aus
+    shuffleArray(searchTerms);
+    const selectedSearchTerms = searchTerms.slice(0, searchCount);
 
     // Zähler für die durchgeführten Suchen
     let searchesPerformed = 0;
@@ -41,8 +95,7 @@ console.log("Version 1.1: Skript erfolgreich aktualisiert!");
             return;
         }
 
-        const randomIndex = Math.floor(Math.random() * searchTerms.length);
-        const searchQuery = searchTerms[randomIndex];
+        const searchQuery = selectedSearchTerms[searchesPerformed];
         const searchBox = document.querySelector('input[name="q"]');
 
         if (searchBox) {
@@ -53,27 +106,9 @@ console.log("Version 1.1: Skript erfolgreich aktualisiert!");
                     searchForm.submit();
                     searchesPerformed++;
                     console.log(`Suche ${searchesPerformed}/${searchCount}: ${searchQuery}`);
-                }, Math.random() * 3000 + 2000); // Zwischen 2 und 5 Sekunden warten
+                }, Math.random() * 3999 + 1000); // Zwischen 1.000 und 4.999 Millisekunden warten
             }
         }
     }
 
     // Funktion für die Automatisierung
-    function autoSearch() {
-        if (searchesPerformed < searchCount) {
-            const delay = Math.random() * 3000 + 2000; // Zwischen 2 und 5 Sekunden Verzögerung
-            setTimeout(() => {
-                startSearch();
-                autoSearch(); // Wiederhole den Vorgang für die nächste Suche
-            }, delay);
-        }
-    }
-
-    // Starte die Automatisierung, wenn die Seite geladen ist
-    window.addEventListener('load', () => {
-        setTimeout(autoSearch, 3000); // Warte 3 Sekunden, bevor die erste Suche startet
-    });
-
-})();
-
-
