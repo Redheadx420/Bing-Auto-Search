@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Bing Search 
 // @namespace    http://tampermonkey.net/
-// @version      1.5
+// @version      1.6
 // @description  Führt genau 60 zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1 und 5 Sekunden, um Blockierungen zu vermeiden.
 // @author       Redhead420
 // @include      *bing.com/*
@@ -13,7 +13,7 @@
 (function() {
     'use strict';
 
-    console.log("Version 1.5: Skript erfolgreich aktualisiert!");
+    console.log("Version 1.6: Skript erfolgreich aktualisiert!");
 
     // Liste von 250 verschiedenen Suchanfragen
     const searchTerms = [
