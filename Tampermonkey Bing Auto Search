@@ -2,13 +2,12 @@
 // @name         Auto Bing Search 
 // @namespace    http://tampermonkey.net/
 // @version      1.5
-// @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 2 und 5 Sekunden, um Blockierungen zu vermeiden.
-// @author       Redheadx420
+// @description  Führt genau 60 zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1 und 5 Sekunden, um Blockierungen zu vermeiden.
+// @author       Redhead420
 // @include      *bing.com/*
 // @grant        none
-// @updateURL   https://raw.githubusercontent.com/Redheadx420/Bing-Auto-Search/main/Tampermonkey%20Bing%20Auto%20Search
-// @downloadURL https://raw.githubusercontent.com/Redheadx420/Bing-Auto-Search/main/Tampermonkey%20Bing%20Auto%20Search
-
+// @updateURL    https://raw.githubusercontent.com/Redheadx420/Bing-Auto-Search/main/Tampermonkey%20Bing%20Auto%20Search
+// @downloadURL  https://raw.githubusercontent.com/Redheadx420/Bing-Auto-Search/main/Tampermonkey%20Bing%20Auto%20Search
 // ==/UserScript==
 
 (function() {
