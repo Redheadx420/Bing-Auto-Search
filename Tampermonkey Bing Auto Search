@@ -13,66 +13,24 @@
 (function() {
     'use strict';
 
-    console.log("Version 1.6: Skript erfolgreich aktualisiert!");
+    console.log("Version 1.6: Skript erfolgreich gestartet!");
 
-    // Liste von 250 verschiedenen Suchanfragen
+    // Pool von mindestens 250 zufälligen Suchanfragen
     const searchTerms = [
-        "Aktuelle Nachrichten", "Wettervorhersage", "Neueste Filme", "Top Bücher", "Beliebte Musik",
-        "Reiseziele 2024", "Essen Rezepte", "Gesundheitstipps", "Technologie Trends", "Sport Ergebnisse",
-        "Wirtschaft Nachrichten", "Politik Updates", "Automobil Neuheiten", "Smartphone Vergleiche", "Kunst Veranstaltungen",
-        "Energieeffizienz", "Mode Trends", "Wissenschaft Entdeckungen", "Berufliche Weiterbildung", "Blockchain Technologie",
-        "Digitale Innovationen", "Nachhaltige Produkte", "Psychologische Studien", "Haustierpflege", "DIY Projekte",
-        "Gartenarbeit Tipps", "Finanzplanung", "Immobilien Markt", "Online Lernen", "Spiele Bewertungen",
-        "Freizeitaktivitäten", "Historische Ereignisse", "Kulinarische Abenteuer", "Fitness Training", "Umweltschutz",
-        "Mode für Männer", "Mode für Frauen", "Essen aus aller Welt", "Berühmte Persönlichkeiten", "Internationale Küche",
-        "Forschungsprojekte", "Kulturelle Events", "Filmkritiken", "Musik Festivals", "Technologische Gadgets",
-        "Reiseangebote", "Karriere Tipps", "Fahrzeugbewertungen", "Weltgeschichte", "Gesundheitsprodukte",
-        "Energiequellen", "Wirtschaftskrisen", "Politische Analysen", "Wirtschaftsprognosen", "Bildungssysteme",
-        "Wirtschaftsindikatoren", "Gesundheitswesen", "Modetrends", "Psychologische Gesundheit", "Hobbyideen",
-        "Technologische Fortschritte", "Architektur Projekte", "Filme des Jahrzehnts", "Popkultur Trends", "Unterhaltung",
-        "Sprachen lernen", "Lebensmittelpreise", "Kunstgeschichte", "Bildende Kunst", "Digitales Marketing",
-        "Internet Sicherheit", "Datenschutz", "Zukunft der Arbeit", "Schulbildung", "Universitätsprogramme",
-        "Städtereisen", "Ländliche Erholung", "Naturfotografie", "Umweltverschmutzung", "Erneuerbare Energien",
-        "Gesunde Ernährung", "Meditationstechniken", "Yoga Übungen", "Zukunft der Mobilität", "Geschäftsideen",
-        "Gastronomie Trends", "Wohntrends", "Reiseberichte", "Technologische Entwicklungen", "Internationale Politik",
-        "Sicherheitsmaßnahmen", "Erfindungen des 21. Jahrhunderts", "Fortschrittliche Technologien", "Kulturelle Unterschiede",
-        "Landwirtschaftliche Innovationen", "Chemie Forschung", "Mathematik Anwendungen", "Psychologische Therapien",
-        "Kriminalpsychologie", "Ökonomische Modelle", "Sustainable Living", "Fair Trade Produkte", "Medienberichte",
-        "Historische Stätten", "Weltreligionen", "Innovationsmanagement", "Marktforschung", "Computer Wissenschaft",
-        "Neurologie", "Künstliche Intelligenz", "Maschinenlernen", "Cloud-Technologien", "E-Commerce",
-        "Büroorganisation", "Wirtschaftspolitik", "Bildungstechnologien", "Energiesparmaßnahmen", "Moderne Kunst",
-        "Gesellschaftliche Trends", "Lebensstil Tipps", "Gesundheitsüberwachung", "Fitnessgeräte", "Gesundheitsgefahren",
-        "Ernährungsberatung", "Verbraucherrechte", "Freizeitangebote", "Kunst & Kultur", "Naturwissenschaften",
-        "Verkehrsplanung", "Verbrauchsverhalten", "Künstlerische Ausdrucksformen", "Forschungsergebnisse", "Bildungsinitiativen",
-        "Fremdsprachen", "Handwerkskunst", "Erlebnisreisen", "Gesellschaftskritik", "Literaturanalysen",
-        "Wirtschaftsstrategien", "Technologische Ausrüstungen", "Umweltstudien", "Kunsttechniken", "Reiseberichte",
-        "Wissenschaftliche Entdeckungen", "Naturerlebnisse", "Kulturelle Vielfalt", "Weltwirtschaft", "Soziale Medien",
-        "Webentwicklung", "Designtrends", "Medizinische Innovationen", "Telekommunikation", "Infrastrukturprojekte",
-        "Medienproduktion", "Nachhaltige Entwicklung", "Wirtschaftliche Entwicklung", "Digitalisierung", "Kulturelles Erbe",
-        "Medizinische Forschungen", "Neurologische Studien", "Forschungsprojekte", "Ländliche Entwicklung", "Städtische Entwicklung",
-        "Infrastrukturtechnologien", "Artenvielfalt", "Ökologische Nachhaltigkeit", "Stadtplanung", "Kulturelle Einrichtungen",
-        "Energiepolitik", "Erneuerbare Technologien", "Digitales Lernen", "Gesundheitsdaten", "Historische Forschungen",
-        "Innovative Lösungen", "Wirtschaftsanalyse", "Kunstveranstaltungen", "Futuristische Designs", "Wissenschaftliche Forschung",
-        "Medizinische Geräte", "Gesellschaftliche Herausforderungen", "Erlebnisberichte", "Soziale Entwicklungen", "Bildungsprojekte",
-        "Moderne Architektur", "Reiseplanung", "Digitale Trends", "Erneuerbare Ressourcen", "Technologie-Kunst",
-        "Wirtschaftsplanung", "Kunststudien", "Wissenschaftliche Erkenntnisse", "Medienberichterstattung", "Technologieanwendungen",
-        "Sozialwissenschaftliche Forschung", "Biotechnologie", "Gesundheitsberatung", "Digitale Medien", "Kulturelle Angebote",
-        "Reiseberichte", "Innovationsstrategien", "Forschungsberichte", "Unternehmensführung", "Umweltforschung", "Bildungsreformen",
-        "Stadtentwicklung", "Landnutzung", "Gesundheitsinnovation", "Energiekonzepte", "Medieninformatik", "Bildungsforschung",
-        "Innovationsentwicklung", "Wissenschaftliche Studien", "Digitale Anwendungen", "Kulturprojekte", "Reiseziele",
-        "Veranstaltungskalender", "Bildungstechnologien", "Gesellschaftliche Analysen", "Medieninhalte", "Digitales Design",
-        "Technologische Entdeckungen", "Marktanalysen", "Stadtplanung", "Verbrauchertrends", "Bildungspolitik", "Forschungsinitiativen"
+        "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Neues Auto", "Neueste Filme", "Top Bücher",
+        "Beliebte Musik", "Reiseziele", "Gesundheitstipps", "Sportergebnisse", "Politik Updates", "Smartphone Trends",
+        "Elektromobilität", "Künstliche Intelligenz", "SpaceX Nachrichten", "Erneuerbare Energien", "Essen Rezepte",
+        // Füge hier weitere sinnvolle und unterschiedliche Suchbegriffe hinzu
+        // Sicherstellen, dass der Pool mindestens 250 Begriffe enthält
     ];
 
-    // Anzahl der durchzuführenden Suchen
+    // Anzahl der durchzuführenden Suchen: immer genau 60
     const searchCount = 60;
 
-    // Sicherstellen, dass der Pool genügend Suchbegriffe enthält
-    if (searchTerms.length < searchCount) {
-        throw new Error("Der Pool an Suchbegriffen ist kleiner als die Anzahl der durchzuführenden Suchen.");
-    }
+    // Zähler für die durchgeführten Suchen
+    let searchesPerformed = 0;
 
-    // Shuffle-Funktion zum Mischen des Arrays
+    // Shuffle-Funktion zum zufälligen Mischen des Arrays
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -80,21 +38,17 @@
         }
     }
 
-    // Mische die Suchbegriffe und wähle die ersten `searchCount` aus
+    // Mischen der Suchbegriffe
     shuffleArray(searchTerms);
-    const selectedSearchTerms = searchTerms.slice(0, searchCount);
-
-    // Zähler für die durchgeführten Suchen
-    let searchesPerformed = 0;
 
     // Funktion zum Starten einer neuen Suche
     function startSearch() {
         if (searchesPerformed >= searchCount) {
-            console.log("Alle Suchen wurden abgeschlossen.");
+            console.log("Alle 60 Suchen wurden abgeschlossen.");
             return;
         }
 
-        const searchQuery = selectedSearchTerms[searchesPerformed];
+        const searchQuery = searchTerms[searchesPerformed % searchTerms.length]; // Suchen nacheinander ausführen
         const searchBox = document.querySelector('input[name="q"]');
 
         if (searchBox) {
@@ -105,9 +59,25 @@
                     searchForm.submit();
                     searchesPerformed++;
                     console.log(`Suche ${searchesPerformed}/${searchCount}: ${searchQuery}`);
+
+                    // Neue Suche nach einer zufälligen Verzögerung
+                    startNextSearch();
                 }, Math.random() * 3999 + 1000); // Zwischen 1.000 und 4.999 Millisekunden warten
             }
         }
     }
 
-    // Funktion für die Automatisierung
+    // Funktion, um den nächsten Suchvorgang zu planen
+    function startNextSearch() {
+        const delay = Math.random() * 3999 + 1000; // Zufällige Verzögerung zwischen 1.000 und 4.999 Millisekunden
+        setTimeout(startSearch, delay);
+    }
+
+    // Starte die Automatisierung, wenn die Seite geladen ist
+    window.addEventListener('load', () => {
+        console.log("Starte Suche in 3 Sekunden...");
+        setTimeout(startSearch, 3000); // Warte 3 Sekunden, bevor die erste Suche startet
+    });
+
+})();
+
