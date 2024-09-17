@@ -1,0 +1,77 @@
+// ==UserScript==
+// @name         Auto Bing Search (20-60 Suchen)
+// @namespace    http://tampermonkey.net/
+// @version      1.3
+// @description  Führt zwischen 20 und 60 zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 2 und 5 Sekunden, um Blockierungen zu vermeiden.
+// @author       Redhead420
+// @include      *bing.com/*
+// @grant        none
+// @updateURL   https://raw.githubusercontent.com/DeinGitHubBenutzername/DeinRepoName/main/auto-bing-search.user.js
+// @downloadURL https://raw.githubusercontent.com/DeinGitHubBenutzername/DeinRepoName/main/auto-bing-search.user.js
+
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Liste von zufälligen Suchanfragen
+    const searchTerms = [
+        "Auto", "Wetter", "Sportnachrichten", "Technologie Trends", "Filme 2024",
+        "Was ist künstliche Intelligenz", "Urlaub in Deutschland", "Elektroauto Vorteile",
+        "Fußball Bundesliga Ergebnisse", "Bestes Smartphone 2024", "Neue Computerspiele",
+        "Elektromobilität", "SpaceX Nachrichten", "Roboter in der Industrie", "Erneuerbare Energien",
+        "Kryptowährungen 2024", "AI und Arbeitsmarkt", "Formula 1 Ergebnisse", "Zukunft der Automobilbranche",
+        "Deutsche Sehenswürdigkeiten", "Online-Shopping Trends", "Gaming PCs", "Digitalisierung in Deutschland",
+        "Top Filme des Jahres", "Musiktrends 2024", "Nachhaltige Mode", "Technologie-Investitionen",
+        "Blockchain Anwendungen", "Tesla Aktien", "E-Mobilität in Europa", "Zukunft des Arbeitsmarkts"
+    ];
+
+    // Anzahl der durchzuführenden Suchen (zufällig zwischen 20 und 60)
+    const searchCount = Math.floor(Math.random() * 41) + 20; // 20 bis 60
+
+    // Zähler für die durchgeführten Suchen
+    let searchesPerformed = 0;
+
+    // Funktion zum Starten einer neuen Suche
+    function startSearch() {
+        if (searchesPerformed >= searchCount) {
+            console.log("Alle Suchen wurden abgeschlossen.");
+            return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * searchTerms.length);
+        const searchQuery = searchTerms[randomIndex];
+        const searchBox = document.querySelector('input[name="q"]');
+
+        if (searchBox) {
+            searchBox.value = searchQuery;
+            const searchForm = document.querySelector('form');
+            if (searchForm) {
+                setTimeout(() => {
+                    searchForm.submit();
+                    searchesPerformed++;
+                    console.log(`Suche ${searchesPerformed}/${searchCount}: ${searchQuery}`);
+                }, Math.random() * 3000 + 2000); // Zwischen 2 und 5 Sekunden warten
+            }
+        }
+    }
+
+    // Funktion für die Automatisierung
+    function autoSearch() {
+        if (searchesPerformed < searchCount) {
+            const delay = Math.random() * 3000 + 2000; // Zwischen 2 und 5 Sekunden Verzögerung
+            setTimeout(() => {
+                startSearch();
+                autoSearch(); // Wiederhole den Vorgang für die nächste Suche
+            }, delay);
+        }
+    }
+
+    // Starte die Automatisierung, wenn die Seite geladen ist
+    window.addEventListener('load', () => {
+        setTimeout(autoSearch, 3000); // Warte 3 Sekunden, bevor die erste Suche startet
+    });
+
+})();
+
+
