@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Bing Search 
 // @namespace    http://tampermonkey.net/
-// @version      1.6
+// @version      1.7
 // @description  Führt genau 60 zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1 und 5 Sekunden, um Blockierungen zu vermeiden.
 // @author       Redhead420
 // @include      *bing.com/*
@@ -13,7 +13,7 @@
 (function() {
     'use strict';
 
-    console.log("Version 1.6: Skript erfolgreich gestartet!");
+    console.log("Version 1.7: Skript erfolgreich gestartet!");
 
     // Pool von mindestens 250 zufälligen Suchanfragen
     const searchTerms = [
@@ -40,44 +40,54 @@
 
     // Mischen der Suchbegriffe
     shuffleArray(searchTerms);
+    const selectedSearchTerms = searchTerms.slice(0, searchCount);
+
+    // Zähler für die durchgeführten Suchen
+    let searchesPerformed = 0;
 
     // Funktion zum Starten einer neuen Suche
-    function startSearch() {
+  function startSearch() {
         if (searchesPerformed >= searchCount) {
             console.log("Alle 60 Suchen wurden abgeschlossen.");
             return;
         }
 
-        const searchQuery = searchTerms[searchesPerformed % searchTerms.length]; // Suchen nacheinander ausführen
+        const searchQuery = selectedSearchTerms[searchesPerformed];
         const searchBox = document.querySelector('input[name="q"]');
 
         if (searchBox) {
             searchBox.value = searchQuery;
             const searchForm = document.querySelector('form');
             if (searchForm) {
+                const delay = Math.random() * 3999 + 1000; // Zwischen 1.000 und 4.999 Millisekunden warten
                 setTimeout(() => {
                     searchForm.submit();
                     searchesPerformed++;
-                    console.log(`Suche ${searchesPerformed}/${searchCount}: ${searchQuery}`);
-
-                    // Neue Suche nach einer zufälligen Verzögerung
-                    startNextSearch();
-                }, Math.random() * 3999 + 1000); // Zwischen 1.000 und 4.999 Millisekunden warten
+                    console.log(`Suche ${searchesPerformed}/${searchCount}: ${searchQuery} (Verzögerung: ${(delay / 1000).toFixed(2)} Sekunden)`);
+                    
+                    // Schätzung, wann die 60 Suchen abgeschlossen sein werden
+                    const remainingSearches = searchCount - searchesPerformed;
+                    const estimatedTimeRemaining = (remainingSearches * 2.5).toFixed(2); // Durchschnittliche Verzögerung von 2,5 Sekunden
+                    console.log(`Verbleibende Suchen: ${remainingSearches}. Geschätzte Zeit bis Abschluss: ca. ${estimatedTimeRemaining} Sekunden.`);
+                }, delay);
             }
         }
     }
 
-    // Funktion, um den nächsten Suchvorgang zu planen
-    function startNextSearch() {
-        const delay = Math.random() * 3999 + 1000; // Zufällige Verzögerung zwischen 1.000 und 4.999 Millisekunden
-        setTimeout(startSearch, delay);
+    // Funktion für die Automatisierung
+    function autoSearch() {
+        if (searchesPerformed < searchCount) {
+            const delay = Math.random() * 3999 + 1000; // Zwischen 1.000 und 4.999 Millisekunden Verzögerung
+            setTimeout(() => {
+                startSearch();
+                autoSearch(); // Wiederhole den Vorgang für die nächste Suche
+            }, delay);
+        }
     }
 
     // Starte die Automatisierung, wenn die Seite geladen ist
     window.addEventListener('load', () => {
-        console.log("Starte Suche in 3 Sekunden...");
-        setTimeout(startSearch, 3000); // Warte 3 Sekunden, bevor die erste Suche startet
+        setTimeout(autoSearch, 3000); // Warte 3 Sekunden, bevor die erste Suche startet
     });
 
 })();
-
