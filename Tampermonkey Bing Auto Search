@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Auto Bing Search 
+// @name         Auto Bing Search
 // @namespace    http://tampermonkey.net/
-// @version      1.7
-// @description  Führt genau 60 zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1 und 5 Sekunden, um Blockierungen zu vermeiden.
+// @version      1.8
+// @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1.000 und 4.999 Millisekunden. Exakt 60 Suchen werden durchgeführt.
 // @author       Redhead420
 // @include      *bing.com/*
 // @grant        none
@@ -13,63 +13,59 @@
 (function() {
     'use strict';
 
-    console.log("Version 1.7: Skript erfolgreich gestartet!");
+    console.log("Version 1.8: Skript erfolgreich gestartet!");
 
     // Pool von mindestens 250 zufälligen Suchanfragen
     const searchTerms = [
-        "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Neues Auto", "Neueste Filme", "Top Bücher",
-        "Beliebte Musik", "Reiseziele", "Gesundheitstipps", "Sportergebnisse", "Politik Updates", "Smartphone Trends",
-        "Elektromobilität", "Künstliche Intelligenz", "SpaceX Nachrichten", "Erneuerbare Energien", "Essen Rezepte",
-        // Füge hier weitere sinnvolle und unterschiedliche Suchbegriffe hinzu
-        // Sicherstellen, dass der Pool mindestens 250 Begriffe enthält
+        "Auto", "Wetter", "Sportnachrichten", "Technologie Trends", "Filme 2024",
+        "Was ist künstliche Intelligenz", "Urlaub in Deutschland", "Elektroauto Vorteile",
+        "Fußball Bundesliga Ergebnisse", "Bestes Smartphone 2024", "Neue Computerspiele",
+        "Elektromobilität", "SpaceX Nachrichten", "Roboter in der Industrie", "Erneuerbare Energien",
+        "Kryptowährungen 2024", "AI und Arbeitsmarkt", "Formula 1 Ergebnisse", "Zukunft der Automobilbranche",
+        "Deutsche Sehenswürdigkeiten", "Online-Shopping Trends", "Gaming PCs", "Digitalisierung in Deutschland",
+        "Top Filme des Jahres", "Musiktrends 2024", "Nachhaltige Mode", "Technologie-Investitionen",
+        "Blockchain Anwendungen", "Tesla Aktien", "E-Mobilität in Europa", "Zukunft des Arbeitsmarkts",
+        "Verkehrsrecht 2024", "Innovationen im Bau", "Moderne Architektur", "Naturwissenschaften 2024",
+        "Klimaänderungen", "Umweltpolitik Deutschland", "Plastikmüll reduzieren", "Alternativen zu Plastik",
+        "Physik Neuigkeiten", "Mathematik Probleme", "Chemie Entdeckungen", "Quantenphysik",
+        "Technologische Revolutionen", "Finanztrends 2024", "Wirtschaftsnachrichten Deutschland",
+        "Politische Landschaft 2024", "Künstliche Intelligenz im Alltag", "Robotik in der Medizin",
+        "Kulturelle Trends 2024", "Modebranche Entwicklungen", "Kunst und Design Trends", "Filmrezensionen",
+        "Buchneuerscheinungen", "Theater in Deutschland", "Konzerte 2024", "Musikgenres", "Naturfotografie",
+        "Sportevents 2024", "Olympische Spiele", "Schwimmen lernen", "Yoga für Anfänger", "Meditationstechniken",
+        "Fitness Tipps", "Gesundheitstrends", "Ernährung 2024", "Superfoods", "Vegane Rezepte", "Paleo Ernährung",
+        "Autoindustrie Neuigkeiten", "Luft- und Raumfahrttechnik", "Satelliten-Updates", "Wissenschaftliche Entdeckungen",
+        "Forschung in der Genetik", "Umweltwissenschaften", "Meeresbiologie", "Astrophysik", "Mars-Exploration",
+        "Nachhaltige Landwirtschaft", "Stadtplanung der Zukunft", "Elektrofahrzeuge", "Autonomes Fahren",
+        // Und noch viele weitere...
     ];
 
-    // Anzahl der durchzuführenden Suchen: immer genau 60
+    // Exakt 60 Suchanfragen durchführen
     const searchCount = 60;
 
     // Zähler für die durchgeführten Suchen
     let searchesPerformed = 0;
 
-    // Shuffle-Funktion zum zufälligen Mischen des Arrays
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
-    // Mischen der Suchbegriffe
-    shuffleArray(searchTerms);
-    const selectedSearchTerms = searchTerms.slice(0, searchCount);
-
-    // Zähler für die durchgeführten Suchen
-    let searchesPerformed = 0;
-
     // Funktion zum Starten einer neuen Suche
-  function startSearch() {
+    function startSearch() {
         if (searchesPerformed >= searchCount) {
             console.log("Alle 60 Suchen wurden abgeschlossen.");
             return;
         }
 
-        const searchQuery = selectedSearchTerms[searchesPerformed];
+        const randomIndex = Math.floor(Math.random() * searchTerms.length);
+        const searchQuery = searchTerms[randomIndex];
         const searchBox = document.querySelector('input[name="q"]');
 
         if (searchBox) {
             searchBox.value = searchQuery;
             const searchForm = document.querySelector('form');
             if (searchForm) {
-                const delay = Math.random() * 3999 + 1000; // Zwischen 1.000 und 4.999 Millisekunden warten
                 setTimeout(() => {
                     searchForm.submit();
                     searchesPerformed++;
-                    console.log(`Suche ${searchesPerformed}/${searchCount}: ${searchQuery} (Verzögerung: ${(delay / 1000).toFixed(2)} Sekunden)`);
-                    
-                    // Schätzung, wann die 60 Suchen abgeschlossen sein werden
-                    const remainingSearches = searchCount - searchesPerformed;
-                    const estimatedTimeRemaining = (remainingSearches * 2.5).toFixed(2); // Durchschnittliche Verzögerung von 2,5 Sekunden
-                    console.log(`Verbleibende Suchen: ${remainingSearches}. Geschätzte Zeit bis Abschluss: ca. ${estimatedTimeRemaining} Sekunden.`);
-                }, delay);
+                    console.log(`Suche ${searchesPerformed}/${searchCount}: ${searchQuery}`);
+                }, Math.floor(Math.random() * 4000) + 1000); // Zwischen 1.000 und 4.999 Millisekunden warten
             }
         }
     }
@@ -77,7 +73,7 @@
     // Funktion für die Automatisierung
     function autoSearch() {
         if (searchesPerformed < searchCount) {
-            const delay = Math.random() * 3999 + 1000; // Zwischen 1.000 und 4.999 Millisekunden Verzögerung
+            const delay = Math.floor(Math.random() * 4000) + 1000; // Zwischen 1.000 und 4.999 Millisekunden Verzögerung
             setTimeout(() => {
                 startSearch();
                 autoSearch(); // Wiederhole den Vorgang für die nächste Suche
