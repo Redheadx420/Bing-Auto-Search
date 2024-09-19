@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Bing Search
 // @namespace    http://tampermonkey.net/
-// @version      1.9.3
+// @version      1.9.4
 // @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1.000 und 4.999 Millisekunden. Exakt 60 Suchen werden durchgeführt.
 // @author       Redhead420
 // @include      *bing.com/*
@@ -13,11 +13,12 @@
 (function() {
     'use strict';
 
-    console.log("Version 1.9.3: Skript erfolgreich gestartet!");
+    console.log("Version 1.9.4: Skript erfolgreich gestartet!");
 
-    // Überprüfe, ob das Skript in einem iframe läuft und verhindere es, wenn ja
+    // Verhindern, dass das Skript in einem iframe ausgeführt wird
     if (window.self !== window.top) {
-        return; // Beende das Skript, wenn es in einem iframe ausgeführt wird
+        console.log("Skript wird in einem iframe ausgeführt. Beende das Skript.");
+        return; // Beende das Skript, wenn es in einem iframe läuft
     }
 
     // Anzahl der durchgeführten Suchen
@@ -28,7 +29,7 @@
 
     // Liste der Suchbegriffe
     const searchTerms = [
-       "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
+         "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
     "Elektroauto Vorteile", "Urlaub in Deutschland", "Gesundheitstipps", "Neue Smartphones", "Gaming PCs",
     "Fußball Bundesliga", "Kryptowährungen", "SpaceX Neuigkeiten", "Netflix Serien 2024", "Musiktrends",
     "Digitale Fotografie", "Technik News", "Streaming Dienste", "Börse heute", "Automobilentwicklung",
@@ -85,7 +86,7 @@
 ];
     
 
-    // Funktion, um eine zufällige Zahl in einem bestimmten Bereich zu generieren
+    // Funktion, um eine zufällige Zahl zwischen min und max zu generieren
     function getRandomTime(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
@@ -100,20 +101,24 @@
         // Wähle einen zufälligen Suchbegriff
         const searchTerm = searchTerms[Math.floor(Math.random() * searchTerms.length)];
 
-        // Führe die Suche in einem neuen Tab durch (ohne "_blank" zur Vermeidung von unnötigen Ressourcenproblemen)
+        // Führe die Suche aus
         const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(searchTerm)}`;
         window.location.href = searchUrl;
 
         // Inkrementiere den Zähler
         searchesPerformed++;
 
-        // Setze ein zufälliges Intervall für die nächste Suche (zwischen 1000 und 4999 ms)
+        // Setze einen zufälligen Timer für die nächste Suche (zwischen 1000 und 4999 ms)
         const nextSearchTime = getRandomTime(1000, 4999);
-        console.log(`Nächste Suche in ${nextSearchTime / 1000} Sekunden: ${searchTerm}`);
+        console.log(`Nächste Suche in ${nextSearchTime / 1000} Sekunden. Suchbegriff: ${searchTerm}`);
 
+        // Starte die nächste Suche nach der zufälligen Verzögerung
         setTimeout(performSearch, nextSearchTime);
     }
 
-    // Starte die erste Suche
-    performSearch();
+    // Starte die erste Suche mit einer zufälligen Verzögerung
+    const initialDelay = getRandomTime(1000, 4999);
+    console.log(`Starte die erste Suche in ${initialDelay / 1000} Sekunden.`);
+    setTimeout(performSearch, initialDelay);
+
 })();
