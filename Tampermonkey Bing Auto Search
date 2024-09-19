@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Bing Search
 // @namespace    http://tampermonkey.net/
-// @version      1.9.8
+// @version      2.0.0.0
 // @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1.000 und 4.999 Millisekunden. Exakt 60 Suchen werden durchgeführt.
 // @author       Redhead420
 // @include      *bing.com/*
@@ -15,7 +15,7 @@
 
     // Liste von Suchbegriffen
     const searchTerms = [
-       "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
+        "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
     "Elektroauto Vorteile", "Urlaub in Deutschland", "Gesundheitstipps", "Neue Smartphones", "Gaming PCs",
     "Fußball Bundesliga", "Kryptowährungen", "SpaceX Neuigkeiten", "Netflix Serien 2024", "Musiktrends",
     "Digitale Fotografie", "Technik News", "Streaming Dienste", "Börse heute", "Automobilentwicklung",
@@ -69,10 +69,10 @@
     "Die besten Webcams", "Monitorhalterungen", "Arbeiten von unterwegs", "Batterie-Backup-Lösungen",
     "Videokonferenz Tools", "Digitale Kalender", "Projektmanagement Software", "Task-Manager Apps",
     "Produktivitäts-Apps", "Arbeitsplatzorganisation", "Digitales Papier", "E-Book-Reader", "Lesebrillen"
+];
+    
 
-    ];
-
-     function getRandomTerm() {
+    function getRandomTerm() {
         return searchTerms[Math.floor(Math.random() * searchTerms.length)];
     }
 
@@ -88,3 +88,4 @@
     console.log('🚀 Das Auto Bing Search Skript wurde gestartet! Viel Spaß beim Suchen! 😄');
 
     setInterval(performSearch, Math.random() * (8000 - 3000) + 3000);
+})();
