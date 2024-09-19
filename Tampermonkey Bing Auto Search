@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Bing Search
 // @namespace    http://tampermonkey.net/
-// @version      1.9.1
+// @version      1.9.2
 // @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1.000 und 4.999 Millisekunden. Exakt 60 Suchen werden durchgeführt.
 // @author       Redhead420
 // @include      *bing.com/*
@@ -13,110 +13,105 @@
 (function() {
     'use strict';
 
-    console.log("Version 1.9.1: Skript erfolgreich gestartet!");
+    console.log("Version 1.9.2: Skript erfolgreich gestartet!");
 
     if (window.self !== window.top) {
         return; // Beende das Skript, wenn es in einem iframe ausgeführt wird
     }
 
-   const searchTerms = [
-    "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
-    "Elektroauto Vorteile", "Urlaub in Deutschland", "Gesundheitstipps", "Neue Smartphones", "Gaming PCs",
-    "Fußball Bundesliga", "Kryptowährungen", "SpaceX Neuigkeiten", "Netflix Serien 2024", "Musiktrends",
-    "Digitale Fotografie", "Technik News", "Streaming Dienste", "Börse heute", "Automobilentwicklung",
-    "Rennsport", "Elektromobilität", "Klimawandel Lösungen", "Erneuerbare Energien", "Sportnachrichten",
-    "Mode 2024", "Urlaub in Europa", "Essen Rezepte", "Ernährungstipps", "Hochzeitstrends", "Fitnessübungen",
-    "Umweltschutz Maßnahmen", "Nachhaltigkeit", "Neue Computerspiele", "Raspberry Pi Projekte", "Home Office Ideen",
-    "Smart Home Geräte", "Smartphone Zubehör", "Ferienziele", "Hobby Fotografie", "Digitale Kunst",
-    "Social Media Marketing", "Influencer Marketing", "Elektrogeräte Tests", "Autonomes Fahren", "Künstliche Intelligenz Jobs",
-    "Blockchain Anwendungen", "Online Shopping", "Robotertechnologie", "Gartenarbeit Tipps", "Immobilienkauf 2024",
-    "Bestes Tablet 2024", "E-Commerce Trends", "Smartwatch 2024", "Freizeitparks", "Camping in Deutschland",
-    "E-Scooter Trends", "Fahrradurlaub", "Photovoltaik 2024", "Energie sparen", "Haushaltsgeräte Tests",
-    "Virtuelle Realität", "Augmented Reality", "3D-Druck Ideen", "Küchengeräte 2024", "Gaming Zubehör",
-    "Reisen 2024", "Hotelbewertungen", "Digitale Bildung", "Künstliche Intelligenz in der Medizin", "Modetrends 2024",
-    "Auto Leasing", "Elektroautos Reichweite", "Die besten Restaurants", "Metaverse Neuigkeiten", "Gaming Tastaturen",
-    "Fitness Tracker", "Schlaftipps", "Babybedarf", "Umweltschutz Technologien", "Aquarium Pflege", "Heimwerken Tipps",
-    "Smartwatch Vergleich", "Garten Gestaltung", "E-Autos 2024", "Elektroauto Ladestationen", "Fahrradtrends 2024",
-    "Technik Gadgets", "Zukunft der Arbeit", "Börse 2024", "Investitionen in Technologie", "Smart Home Sicherheit",
-    "Apple Neuheiten", "Android Updates", "YouTube Trends", "Die besten Bücher", "Online Kurse", "Digitale Nomaden",
-    "Work-Life-Balance", "Freelancing Tipps", "Nachhaltige Mode", "Sonnenenergie", "Luftqualität verbessern",
-    "Weltreise planen", "Smartphone Kameras", "Fitnessgeräte für zu Hause", "Ferienhaus mieten", "Luxushotels",
-    "Weltwunder", "Camping Zubehör", "Schnorchelspots", "Digitale Nomaden Jobs", "Co-Working Spaces",
-    "Online Marketing", "SEO Tipps", "Webdesign 2024", "Haustierbedarf", "Nachhaltige Ernährung", "Zero Waste Tipps",
-    "Minimalismus leben", "Urban Gardening", "Finanzen organisieren", "Aktien Tipps", "Krypto Wallets",
-    "Kochrezepte", "Italien Urlaub", "Französische Küche", "DIY Möbel", "Moderne Architektur", "Outdoor-Aktivitäten",
-    "Motorradtouren", "Bergsteigen", "Höhlenerkundung", "Weinverkostung", "Fotografie Ausrüstung", "Musik Equipment",
-    "Plattenspieler", "Musikstreaming", "VPN Services", "Cloud Computing", "Cyber Sicherheit", "Online Banking",
-    "Digitale Währungen", "Digital Detox", "Stressbewältigung", "Meditation", "Selbsthilfe", "Persönliche Weiterentwicklung",
-    "Business Ideen", "Entrepreneurship", "Startup Tipps", "Projektmanagement", "Führungskräfteentwicklung",
-    "Geld sparen", "Passives Einkommen", "Investieren in Immobilien", "Franchise Unternehmen", "Crowdfunding Plattformen",
-    "Nachhaltige Investments", "Soziale Netzwerke", "Online Datenschutz", "IT Sicherheit", "Kryptowährung Investitionen",
-    "Metaverse und NFTs", "Die besten Podcasts", "Online Kurse für Programmieren", "Fahrradzubehör", "Motorrad Zubehör",
-    "Wohnmobil Urlaub", "Elektroauto Technik", "Elektrofahrräder", "Solarenergie für Zuhause", "Die besten Grills",
-    "Mikroabenteuer", "Wandern in den Alpen", "Klettersteige", "Fotodrohnen", "Gopro Zubehör", "Yogamatten Vergleich",
-    "Kamera-Drohnen", "Reiseziele für Fotografen", "Ernährungspläne", "Low-Carb Diäten", "Gesunde Snacks",
-    "Food Trends 2024", "Wein aus Deutschland", "Glutenfreie Ernährung", "Bio Lebensmittel", "Yoga Übungen",
-    "Meditationsmusik", "Tanzen lernen", "Die besten Schuhe", "Skiausrüstung", "Campingtipps für Anfänger",
-    "Surfen lernen", "Kajak fahren", "Stand-Up-Paddling", "Segelboote", "Wassersport Zubehör", "Kitesurfen",
-    "Schneesportarten", "Fischen für Anfänger", "Reiten lernen", "Bogenschießen", "Golftraining", "Indoor-Sportarten",
-    "Fitnessstudio zu Hause", "Gewichtheben", "Boxtraining", "Marathon Vorbereitung", "Langlaufen",
-    "Wildcamping", "Survival Ausrüstung", "Skateboard Zubehör", "BMX Tricks", "Wakeboarding",
-    "Moderne Kunst", "Kunstgalerien", "Fotokunst", "Malerei Techniken", "Die besten Museen", "Moderne Architektur",
-    "Zeichnen lernen", "Kreatives Schreiben", "Sprachkurse", "Fotobearbeitungssoftware", "Grafikdesign",
-    "Video Editing", "Animationen erstellen", "Programmierkurse", "Webentwicklung", "App-Entwicklung",
-    "KI Programmierung", "Datenanalyse lernen", "Machine Learning", "Blockchain Entwicklung", "Cybersecurity Jobs",
-    "Roboter bauen", "3D-Modellierung", "Virtuelle Realitäten", "Drohnenprogrammierung", "IoT Geräte",
-    "Fahrradreparatur", "Auto Tuning", "Fotografie Kurse", "Drohnenaufnahmen", "Livestreaming Technik",
-    "Podcasting Ausrüstung", "Blogger Tipps", "Digitales Nomadentum", "Fotografie für Anfänger", "Videografie",
-    "Buch schreiben", "Reisen für Fotografen", "Fotodrucker Vergleich", "Kameraobjektive Vergleich",
-    "Virtual Reality Brillen", "Gaming Stühle", "Gaming Laptops", "Smartphones unter 500 Euro", "Die besten Tablets",
-    "Notebook Kaufberatung", "Die besten Kopfhörer", "Gaming Monitore", "Home Office Gadgets",
-    "Die besten Webcams", "Monitorhalterungen", "Arbeiten von unterwegs", "Batterie-Backup-Lösungen",
-    "Videokonferenz Tools", "Digitale Kalender", "Projektmanagement Software", "Task-Manager Apps",
-    "Produktivitäts-Apps", "Arbeitsplatzorganisation", "Digitales Papier", "E-Book-Reader", "Lesebrillen"
-];
+      // Anzahl der durchgeführten Suchen
+    let searchesPerformed = 0;
 
+    // Maximale Anzahl an Suchen
+    const maxSearches = 90;
+
+    // Liste der Suchbegriffe
+    const searchTerms = [
+        "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
+        "Elektroauto Vorteile", "Urlaub in Deutschland", "Gesundheitstipps", "Neue Smartphones", "Gaming PCs",
+        "Fußball Bundesliga", "Kryptowährungen", "SpaceX Neuigkeiten", "Netflix Serien 2024", "Musiktrends",
+        "Digitale Fotografie", "Technik News", "Streaming Dienste", "Börse heute", "Automobilentwicklung",
+        "Rennsport", "Elektromobilität", "Klimawandel Lösungen", "Erneuerbare Energien", "Sportnachrichten",
+        "Mode 2024", "Urlaub in Europa", "Essen Rezepte", "Ernährungstipps", "Hochzeitstrends", "Fitnessübungen",
+        "Umweltschutz Maßnahmen", "Nachhaltigkeit", "Neue Computerspiele", "Raspberry Pi Projekte", "Home Office Ideen",
+        "Smart Home Geräte", "Smartphone Zubehör", "Ferienziele", "Hobby Fotografie", "Digitale Kunst",
+        "Social Media Marketing", "Influencer Marketing", "Elektrogeräte Tests", "Autonomes Fahren", "Künstliche Intelligenz Jobs",
+        "Blockchain Anwendungen", "Online Shopping", "Robotertechnologie", "Gartenarbeit Tipps", "Immobilienkauf 2024",
+        "Bestes Tablet 2024", "E-Commerce Trends", "Smartwatch 2024", "Freizeitparks", "Camping in Deutschland",
+        "E-Scooter Trends", "Fahrradurlaub", "Photovoltaik 2024", "Energie sparen", "Haushaltsgeräte Tests",
+        "Virtuelle Realität", "Augmented Reality", "3D-Druck Ideen", "Küchengeräte 2024", "Gaming Zubehör",
+        "Reisen 2024", "Hotelbewertungen", "Digitale Bildung", "Künstliche Intelligenz in der Medizin", "Modetrends 2024",
+        "Auto Leasing", "Elektroautos Reichweite", "Die besten Restaurants", "Metaverse Neuigkeiten", "Gaming Tastaturen",
+        "Fitness Tracker", "Schlaftipps", "Babybedarf", "Umweltschutz Technologien", "Aquarium Pflege", "Heimwerken Tipps",
+        "Smartwatch Vergleich", "Garten Gestaltung", "E-Autos 2024", "Elektroauto Ladestationen", "Fahrradtrends 2024",
+        "Technik Gadgets", "Zukunft der Arbeit", "Börse 2024", "Investitionen in Technologie", "Smart Home Sicherheit",
+        "Apple Neuheiten", "Android Updates", "YouTube Trends", "Die besten Bücher", "Online Kurse", "Digitale Nomaden",
+        "Work-Life-Balance", "Freelancing Tipps", "Nachhaltige Mode", "Sonnenenergie", "Luftqualität verbessern",
+        "Weltreise planen", "Smartphone Kameras", "Fitnessgeräte für zu Hause", "Ferienhaus mieten", "Luxushotels",
+        "Weltwunder", "Camping Zubehör", "Schnorchelspots", "Digitale Nomaden Jobs", "Co-Working Spaces",
+        "Online Marketing", "SEO Tipps", "Webdesign 2024", "Haustierbedarf", "Nachhaltige Ernährung", "Zero Waste Tipps",
+        "Minimalismus leben", "Urban Gardening", "Finanzen organisieren", "Aktien Tipps", "Krypto Wallets",
+        "Kochrezepte", "Italien Urlaub", "Französische Küche", "DIY Möbel", "Moderne Architektur", "Outdoor-Aktivitäten",
+        "Motorradtouren", "Bergsteigen", "Höhlenerkundung", "Weinverkostung", "Fotografie Ausrüstung", "Musik Equipment",
+        "Plattenspieler", "Musikstreaming", "VPN Services", "Cloud Computing", "Cyber Sicherheit", "Online Banking",
+        "Digitale Währungen", "Digital Detox", "Stressbewältigung", "Meditation", "Selbsthilfe", "Persönliche Weiterentwicklung",
+        "Business Ideen", "Entrepreneurship", "Startup Tipps", "Projektmanagement", "Führungskräfteentwicklung",
+        "Geld sparen", "Passives Einkommen", "Investieren in Immobilien", "Franchise Unternehmen", "Crowdfunding Plattformen",
+        "Nachhaltige Investments", "Soziale Netzwerke", "Online Datenschutz", "IT Sicherheit", "Kryptowährung Investitionen",
+        "Metaverse und NFTs", "Die besten Podcasts", "Online Kurse für Programmieren", "Fahrradzubehör", "Motorrad Zubehör",
+        "Wohnmobil Urlaub", "Elektroauto Technik", "Elektrofahrräder", "Solarenergie für Zuhause", "Die besten Grills",
+        "Mikroabenteuer", "Wandern in den Alpen", "Klettersteige", "Fotodrohnen", "Gopro Zubehör", "Yogamatten Vergleich",
+        "Kamera-Drohnen", "Reiseziele für Fotografen", "Ernährungspläne", "Low-Carb Diäten", "Gesunde Snacks",
+        "Food Trends 2024", "Wein aus Deutschland", "Glutenfreie Ernährung", "Bio Lebensmittel", "Yoga Übungen",
+        "Meditationsmusik", "Tanzen lernen", "Die besten Schuhe", "Skiausrüstung", "Campingtipps für Anfänger",
+        "Surfen lernen", "Kajak fahren", "Stand-Up-Paddling", "Segelboote", "Wassersport Zubehör", "Kitesurfen",
+        "Schneesportarten", "Fischen für Anfänger", "Reiten lernen", "Bogenschießen", "Golftraining", "Indoor-Sportarten",
+        "Fitnessstudio zu Hause", "Gewichtheben", "Boxtraining", "Marathon Vorbereitung", "Langlaufen",
+        "Wildcamping", "Survival Ausrüstung", "Skateboard Zubehör", "BMX Tricks", "Wakeboarding",
+        "Moderne Kunst", "Kunstgalerien", "Fotokunst", "Malerei Techniken", "Die besten Museen", "Moderne Architektur",
+        "Zeichnen lernen", "Kreatives Schreiben", "Sprachkurse", "Fotobearbeitungssoftware", "Grafikdesign",
+        "Video Editing", "Animationen erstellen", "Programmierkurse", "Webentwicklung", "App-Entwicklung",
+        "KI Programmierung", "Datenanalyse lernen", "Machine Learning", "Blockchain Entwicklung", "Cybersecurity Jobs",
+        "Roboter bauen", "3D-Modellierung", "Virtuelle Realitäten", "Drohnenprogrammierung", "IoT Geräte",
+        "Fahrradreparatur", "Auto Tuning", "Fotografie Kurse", "Drohnenaufnahmen", "Livestreaming Technik",
+        "Podcasting Ausrüstung", "Blogger Tipps", "Digitales Nomadentum", "Fotografie für Anfänger", "Videografie",
+        "Buch schreiben", "Reisen für Fotografen", "Fotodrucker Vergleich", "Kameraobjektive Vergleich",
+        "Virtual Reality Brillen", "Gaming Stühle", "Gaming Laptops", "Smartphones unter 500 Euro", "Die besten Tablets",
+        "Notebook Kaufberatung", "Die besten Kopfhörer", "Gaming Monitore", "Home Office Gadgets",
+        "Die besten Webcams", "Monitorhalterungen", "Arbeiten von unterwegs", "Batterie-Backup-Lösungen",
+        "Videokonferenz Tools", "Digitale Kalender", "Projektmanagement Software", "Task-Manager Apps",
+        "Produktivitäts-Apps", "Arbeitsplatzorganisation", "Digitales Papier", "E-Book-Reader", "Lesebrillen"
     ];
 
-    const searchCount = 60; // Anzahl der zu durchführenden Suchen
-    let searchesPerformed = 0; // Zähler für durchgeführte Suchen
+    // Funktion, um eine zufällige Zahl in einem bestimmten Bereich zu generieren
+    function getRandomTime(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
 
-    // Funktion zum Starten einer neuen Suche
-    function startSearch() {
-        if (searchesPerformed >= searchCount) {
-            console.log("Alle 60 Suchen abgeschlossen.");
+    // Funktion, um eine zufällige Suche durchzuführen
+    function performSearch() {
+        if (searchesPerformed >= maxSearches) {
+            console.log('Alle Suchen abgeschlossen.');
             return;
         }
 
-        const randomIndex = Math.floor(Math.random() * searchTerms.length);
-        const searchQuery = searchTerms[randomIndex];
-        const searchBox = document.querySelector('input[name="q"]');
+        // Wähle einen zufälligen Suchbegriff
+        const searchTerm = searchTerms[Math.floor(Math.random() * searchTerms.length)];
 
-        if (searchBox) {
-            searchBox.value = searchQuery;
-            const searchForm = document.querySelector('form');
-            if (searchForm) {
-                searchForm.submit();
-                searchesPerformed++;
-                console.log(`Suche ${searchesPerformed}/${searchCount}: ${searchQuery}`);
-            }
-        }
+        // Führe die Suche durch
+        const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(searchTerm)}`;
+        window.open(searchUrl, '_blank');
+
+        // Inkrementiere den Zähler
+        searchesPerformed++;
+
+        // Setze ein zufälliges Intervall für die nächste Suche (zwischen 1000 und 4999 ms)
+        const nextSearchTime = getRandomTime(1000, 4999);
+        console.log(`Nächste Suche in ${nextSearchTime / 1000} Sekunden: ${searchTerm}`);
+
+        setTimeout(performSearch, nextSearchTime);
     }
 
-    // Hauptsuchschleife mit setInterval
-    const searchInterval = setInterval(() => {
-        if (searchesPerformed < searchCount) {
-            startSearch();
-        } else {
-            clearInterval(searchInterval); // Beende den Timer, wenn die 60 Suchen abgeschlossen sind
-        }
-    }, Math.floor(Math.random() * 4000) + 1000); // Zufällige Verzögerung zwischen 1.000 und 4.999 Millisekunden
-
-    // Zähler für die Konsole anzeigen
-    console.log(`Suche gestartet. Ziel: 60 Suchen. Aktuelle Suchen: ${searchesPerformed}/60`);
-
-    window.addEventListener('blur', () => {
-        console.log("Tab gewechselt, aber Skript läuft weiter.");
-    });
-
+    // Starte die erste Suche
+    performSearch();
 })();
