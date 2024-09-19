@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Bing Search
 // @namespace    http://tampermonkey.net/
-// @version      1.9.7
+// @version      1.9.8
 // @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1.000 und 4.999 Millisekunden. Exakt 60 Suchen werden durchgeführt.
 // @author       Redhead420
 // @include      *bing.com/*
@@ -72,7 +72,7 @@
 
     ];
 
-    function getRandomTerm() {
+     function getRandomTerm() {
         return searchTerms[Math.floor(Math.random() * searchTerms.length)];
     }
 
@@ -83,5 +83,8 @@
             searchBox.form.submit();
         }
     }
- console.log('🚀 Das Auto Bing Search Skript wurde gestartet! Viel Spaß beim Suchen! 😄');
+
+    // Lustiger Spruch in der Konsole
+    console.log('🚀 Das Auto Bing Search Skript wurde gestartet! Viel Spaß beim Suchen! 😄');
+
     setInterval(performSearch, Math.random() * (8000 - 3000) + 3000);
