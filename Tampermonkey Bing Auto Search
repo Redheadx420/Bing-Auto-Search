@@ -1,14 +1,12 @@
 // ==UserScript==
 // @name         Auto Bing Search
 // @namespace    http://tampermonkey.net/
-// @version      2.0.0
-// @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 3.000 und 8.000 Millisekunden. Exakt 60 Suchen werden durchgeführt.
+// @version      1.9.9
+// @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 3.000 und 8.000 Millisekunden.
 // @author       Redhead420
 // @match        https://www.bing.com/*
 // @grant        none
 // @run-at       document-idle
-// @updateURL    https://raw.githubusercontent.com/Redheadx420/Bing-Auto-Search/main/Tampermonkey%20Bing%20Auto%20Search
-// @downloadURL  https://raw.githubusercontent.com/Redheadx420/Bing-Auto-Search/main/Tampermonkey%20Bing%20Auto%20Search
 // ==/UserScript==
 
 (function() {
@@ -16,9 +14,62 @@
 
     // Liste von Suchbegriffen
     const searchTerms = [
-        "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
-        // Kürzere Liste für Tests
-    ];
+         "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
+    "Elektroauto Vorteile", "Urlaub in Deutschland", "Gesundheitstipps", "Neue Smartphones", "Gaming PCs",
+    "Fußball Bundesliga", "Kryptowährungen", "SpaceX Neuigkeiten", "Netflix Serien 2024", "Musiktrends",
+    "Digitale Fotografie", "Technik News", "Streaming Dienste", "Börse heute", "Automobilentwicklung",
+    "Rennsport", "Elektromobilität", "Klimawandel Lösungen", "Erneuerbare Energien", "Sportnachrichten",
+    "Mode 2024", "Urlaub in Europa", "Essen Rezepte", "Ernährungstipps", "Hochzeitstrends", "Fitnessübungen",
+    "Umweltschutz Maßnahmen", "Nachhaltigkeit", "Neue Computerspiele", "Raspberry Pi Projekte", "Home Office Ideen",
+    "Smart Home Geräte", "Smartphone Zubehör", "Ferienziele", "Hobby Fotografie", "Digitale Kunst",
+    "Social Media Marketing", "Influencer Marketing", "Elektrogeräte Tests", "Autonomes Fahren", "Künstliche Intelligenz Jobs",
+    "Blockchain Anwendungen", "Online Shopping", "Robotertechnologie", "Gartenarbeit Tipps", "Immobilienkauf 2024",
+    "Bestes Tablet 2024", "E-Commerce Trends", "Smartwatch 2024", "Freizeitparks", "Camping in Deutschland",
+    "E-Scooter Trends", "Fahrradurlaub", "Photovoltaik 2024", "Energie sparen", "Haushaltsgeräte Tests",
+    "Virtuelle Realität", "Augmented Reality", "3D-Druck Ideen", "Küchengeräte 2024", "Gaming Zubehör",
+    "Reisen 2024", "Hotelbewertungen", "Digitale Bildung", "Künstliche Intelligenz in der Medizin", "Modetrends 2024",
+    "Auto Leasing", "Elektroautos Reichweite", "Die besten Restaurants", "Metaverse Neuigkeiten", "Gaming Tastaturen",
+    "Fitness Tracker", "Schlaftipps", "Babybedarf", "Umweltschutz Technologien", "Aquarium Pflege", "Heimwerken Tipps",
+    "Smartwatch Vergleich", "Garten Gestaltung", "E-Autos 2024", "Elektroauto Ladestationen", "Fahrradtrends 2024",
+    "Technik Gadgets", "Zukunft der Arbeit", "Börse 2024", "Investitionen in Technologie", "Smart Home Sicherheit",
+    "Apple Neuheiten", "Android Updates", "YouTube Trends", "Die besten Bücher", "Online Kurse", "Digitale Nomaden",
+    "Work-Life-Balance", "Freelancing Tipps", "Nachhaltige Mode", "Sonnenenergie", "Luftqualität verbessern",
+    "Weltreise planen", "Smartphone Kameras", "Fitnessgeräte für zu Hause", "Ferienhaus mieten", "Luxushotels",
+    "Weltwunder", "Camping Zubehör", "Schnorchelspots", "Digitale Nomaden Jobs", "Co-Working Spaces",
+    "Online Marketing", "SEO Tipps", "Webdesign 2024", "Haustierbedarf", "Nachhaltige Ernährung", "Zero Waste Tipps",
+    "Minimalismus leben", "Urban Gardening", "Finanzen organisieren", "Aktien Tipps", "Krypto Wallets",
+    "Kochrezepte", "Italien Urlaub", "Französische Küche", "DIY Möbel", "Moderne Architektur", "Outdoor-Aktivitäten",
+    "Motorradtouren", "Bergsteigen", "Höhlenerkundung", "Weinverkostung", "Fotografie Ausrüstung", "Musik Equipment",
+    "Plattenspieler", "Musikstreaming", "VPN Services", "Cloud Computing", "Cyber Sicherheit", "Online Banking",
+    "Digitale Währungen", "Digital Detox", "Stressbewältigung", "Meditation", "Selbsthilfe", "Persönliche Weiterentwicklung",
+    "Business Ideen", "Entrepreneurship", "Startup Tipps", "Projektmanagement", "Führungskräfteentwicklung",
+    "Geld sparen", "Passives Einkommen", "Investieren in Immobilien", "Franchise Unternehmen", "Crowdfunding Plattformen",
+    "Nachhaltige Investments", "Soziale Netzwerke", "Online Datenschutz", "IT Sicherheit", "Kryptowährung Investitionen",
+    "Metaverse und NFTs", "Die besten Podcasts", "Online Kurse für Programmieren", "Fahrradzubehör", "Motorrad Zubehör",
+    "Wohnmobil Urlaub", "Elektroauto Technik", "Elektrofahrräder", "Solarenergie für Zuhause", "Die besten Grills",
+    "Mikroabenteuer", "Wandern in den Alpen", "Klettersteige", "Fotodrohnen", "Gopro Zubehör", "Yogamatten Vergleich",
+    "Kamera-Drohnen", "Reiseziele für Fotografen", "Ernährungspläne", "Low-Carb Diäten", "Gesunde Snacks",
+    "Food Trends 2024", "Wein aus Deutschland", "Glutenfreie Ernährung", "Bio Lebensmittel", "Yoga Übungen",
+    "Meditationsmusik", "Tanzen lernen", "Die besten Schuhe", "Skiausrüstung", "Campingtipps für Anfänger",
+    "Surfen lernen", "Kajak fahren", "Stand-Up-Paddling", "Segelboote", "Wassersport Zubehör", "Kitesurfen",
+    "Schneesportarten", "Fischen für Anfänger", "Reiten lernen", "Bogenschießen", "Golftraining", "Indoor-Sportarten",
+    "Fitnessstudio zu Hause", "Gewichtheben", "Boxtraining", "Marathon Vorbereitung", "Langlaufen",
+    "Wildcamping", "Survival Ausrüstung", "Skateboard Zubehör", "BMX Tricks", "Wakeboarding",
+    "Moderne Kunst", "Kunstgalerien", "Fotokunst", "Malerei Techniken", "Die besten Museen", "Moderne Architektur",
+    "Zeichnen lernen", "Kreatives Schreiben", "Sprachkurse", "Fotobearbeitungssoftware", "Grafikdesign",
+    "Video Editing", "Animationen erstellen", "Programmierkurse", "Webentwicklung", "App-Entwicklung",
+    "KI Programmierung", "Datenanalyse lernen", "Machine Learning", "Blockchain Entwicklung", "Cybersecurity Jobs",
+    "Roboter bauen", "3D-Modellierung", "Virtuelle Realitäten", "Drohnenprogrammierung", "IoT Geräte",
+    "Fahrradreparatur", "Auto Tuning", "Fotografie Kurse", "Drohnenaufnahmen", "Livestreaming Technik",
+    "Podcasting Ausrüstung", "Blogger Tipps", "Digitales Nomadentum", "Fotografie für Anfänger", "Videografie",
+    "Buch schreiben", "Reisen für Fotografen", "Fotodrucker Vergleich", "Kameraobjektive Vergleich",
+    "Virtual Reality Brillen", "Gaming Stühle", "Gaming Laptops", "Smartphones unter 500 Euro", "Die besten Tablets",
+    "Notebook Kaufberatung", "Die besten Kopfhörer", "Gaming Monitore", "Home Office Gadgets",
+    "Die besten Webcams", "Monitorhalterungen", "Arbeiten von unterwegs", "Batterie-Backup-Lösungen",
+    "Videokonferenz Tools", "Digitale Kalender", "Projektmanagement Software", "Task-Manager Apps",
+    "Produktivitäts-Apps", "Arbeitsplatzorganisation", "Digitales Papier", "E-Book-Reader", "Lesebrillen"
+];
+
 
     function getRandomTerm() {
         return searchTerms[Math.floor(Math.random() * searchTerms.length)];
@@ -35,8 +86,8 @@
         }
     }
 
-    // Lustiger Spruch in der Konsole
-    console.log('🚀 Das Auto Bing Search Skript wurde gestartet! Viel Spaß beim Suchen! 😄');
+    console.log('🚀 Das Auto Bing Search Skript wurde gestartet, gönn dir Rewardspunkte und bau dir einen😎 ');
 
     setInterval(performSearch, Math.random() * (8000 - 3000) + 3000);
 })();
+
