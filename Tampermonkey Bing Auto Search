@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Bing Search
 // @namespace    http://tampermonkey.net/
-// @version      1.9.4
+// @version      1.9.5
 // @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1.000 und 4.999 Millisekunden. Exakt 60 Suchen werden durchgeführt.
 // @author       Redhead420
 // @include      *bing.com/*
@@ -13,7 +13,7 @@
 (function() {
     'use strict';
 
-    console.log("Version 1.9.4: Skript erfolgreich gestartet!");
+    console.log("Version 1.9.5: Skript erfolgreich gestartet!");
 
     // Verhindern, dass das Skript in einem iframe ausgeführt wird
     if (window.self !== window.top) {
@@ -27,9 +27,9 @@
     // Maximale Anzahl an Suchen
     const maxSearches = 90;
 
-    // Liste der Suchbegriffe
-    const searchTerms = [
-         "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
+    // Array für Suchbegriffe (Hier später die 250 Begriffe einfügen)
+const searchTerms = [
+     "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
     "Elektroauto Vorteile", "Urlaub in Deutschland", "Gesundheitstipps", "Neue Smartphones", "Gaming PCs",
     "Fußball Bundesliga", "Kryptowährungen", "SpaceX Neuigkeiten", "Netflix Serien 2024", "Musiktrends",
     "Digitale Fotografie", "Technik News", "Streaming Dienste", "Börse heute", "Automobilentwicklung",
@@ -83,42 +83,40 @@
     "Die besten Webcams", "Monitorhalterungen", "Arbeiten von unterwegs", "Batterie-Backup-Lösungen",
     "Videokonferenz Tools", "Digitale Kalender", "Projektmanagement Software", "Task-Manager Apps",
     "Produktivitäts-Apps", "Arbeitsplatzorganisation", "Digitales Papier", "E-Book-Reader", "Lesebrillen"
+
 ];
-    
 
-    // Funktion, um eine zufällige Zahl zwischen min und max zu generieren
-    function getRandomTime(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
+// Funktion, um eine zufällige Zahl im Bereich [min, max] zu erzeugen
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Funktion, um eine zufällige Zeitverzögerung zwischen 1000 und 4999 Millisekunden zu erhalten
+function getRandomDelay() {
+    return getRandomInt(1000, 4999);
+}
+
+// Funktion, um eine Bing-Suche durchzuführen
+function performSearch(term) {
+    const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(term)}`;
+    window.open(searchUrl, '_blank');
+}
+
+// Funktion, um eine zufällige Suche auszuführen
+function performRandomSearch() {
+    const randomIndex = getRandomInt(0, searchTerms.length - 1);
+    const randomTerm = searchTerms[randomIndex];
+    performSearch(randomTerm);
+}
+
+// Funktion, um alle Suchvorgänge mit zufälligen Verzögerungen durchzuführen
+async function performSearches() {
+    for (let i = 0; i < 60; i++) {
+        performRandomSearch();
+        const delay = getRandomDelay();
+        await new Promise(resolve => setTimeout(resolve, delay));
     }
+}
 
-    // Funktion, um eine zufällige Suche durchzuführen
-    function performSearch() {
-        if (searchesPerformed >= maxSearches) {
-            console.log('Alle Suchen abgeschlossen.');
-            return;
-        }
-
-        // Wähle einen zufälligen Suchbegriff
-        const searchTerm = searchTerms[Math.floor(Math.random() * searchTerms.length)];
-
-        // Führe die Suche aus
-        const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(searchTerm)}`;
-        window.location.href = searchUrl;
-
-        // Inkrementiere den Zähler
-        searchesPerformed++;
-
-        // Setze einen zufälligen Timer für die nächste Suche (zwischen 1000 und 4999 ms)
-        const nextSearchTime = getRandomTime(1000, 4999);
-        console.log(`Nächste Suche in ${nextSearchTime / 1000} Sekunden. Suchbegriff: ${searchTerm}`);
-
-        // Starte die nächste Suche nach der zufälligen Verzögerung
-        setTimeout(performSearch, nextSearchTime);
-    }
-
-    // Starte die erste Suche mit einer zufälligen Verzögerung
-    const initialDelay = getRandomTime(1000, 4999);
-    console.log(`Starte die erste Suche in ${initialDelay / 1000} Sekunden.`);
-    setTimeout(performSearch, initialDelay);
-
-})();
+// Suche starten
+performSearches();
