@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Bing Search
 // @namespace    http://tampermonkey.net/
-// @version      1.9.5
+// @version      1.9.7
 // @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 1.000 und 4.999 Millisekunden. Exakt 60 Suchen werden durchgeführt.
 // @author       Redhead420
 // @include      *bing.com/*
@@ -13,23 +13,9 @@
 (function() {
     'use strict';
 
-    console.log("Version 1.9.5: Skript erfolgreich gestartet!");
-
-    // Verhindern, dass das Skript in einem iframe ausgeführt wird
-    if (window.self !== window.top) {
-        console.log("Skript wird in einem iframe ausgeführt. Beende das Skript.");
-        return; // Beende das Skript, wenn es in einem iframe läuft
-    }
-
-    // Anzahl der durchgeführten Suchen
-    let searchesPerformed = 0;
-
-    // Maximale Anzahl an Suchen
-    const maxSearches = 90;
-
-    // Array für Suchbegriffe (Hier später die 250 Begriffe einfügen)
-const searchTerms = [
-     "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
+    // Liste von Suchbegriffen
+    const searchTerms = [
+       "Aktuelle Nachrichten", "Wettervorhersage", "Technologie Trends", "Filme 2024", "Künstliche Intelligenz",
     "Elektroauto Vorteile", "Urlaub in Deutschland", "Gesundheitstipps", "Neue Smartphones", "Gaming PCs",
     "Fußball Bundesliga", "Kryptowährungen", "SpaceX Neuigkeiten", "Netflix Serien 2024", "Musiktrends",
     "Digitale Fotografie", "Technik News", "Streaming Dienste", "Börse heute", "Automobilentwicklung",
@@ -84,39 +70,18 @@ const searchTerms = [
     "Videokonferenz Tools", "Digitale Kalender", "Projektmanagement Software", "Task-Manager Apps",
     "Produktivitäts-Apps", "Arbeitsplatzorganisation", "Digitales Papier", "E-Book-Reader", "Lesebrillen"
 
-];
+    ];
 
-// Funktion, um eine zufällige Zahl im Bereich [min, max] zu erzeugen
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-// Funktion, um eine zufällige Zeitverzögerung zwischen 1000 und 4999 Millisekunden zu erhalten
-function getRandomDelay() {
-    return getRandomInt(1000, 4999);
-}
-
-// Funktion, um eine Bing-Suche durchzuführen
-function performSearch(term) {
-    const searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(term)}`;
-    window.open(searchUrl, '_blank');
-}
-
-// Funktion, um eine zufällige Suche auszuführen
-function performRandomSearch() {
-    const randomIndex = getRandomInt(0, searchTerms.length - 1);
-    const randomTerm = searchTerms[randomIndex];
-    performSearch(randomTerm);
-}
-
-// Funktion, um alle Suchvorgänge mit zufälligen Verzögerungen durchzuführen
-async function performSearches() {
-    for (let i = 0; i < 60; i++) {
-        performRandomSearch();
-        const delay = getRandomDelay();
-        await new Promise(resolve => setTimeout(resolve, delay));
+    function getRandomTerm() {
+        return searchTerms[Math.floor(Math.random() * searchTerms.length)];
     }
-}
 
-// Suche starten
-performSearches();
+    function performSearch() {
+        const searchBox = document.querySelector('input[name="q"]');
+        if (searchBox) {
+            searchBox.value = getRandomTerm();
+            searchBox.form.submit();
+        }
+    }
+ console.log('🚀 Das Auto Bing Search Skript wurde gestartet! Viel Spaß beim Suchen! 😄');
+    setInterval(performSearch, Math.random() * (8000 - 3000) + 3000);
