@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto Bing Search
 // @namespace    http://tampermonkey.net/
-// @version      1.9.8
+// @version      1.9.9
 // @description  Führt zufällige Suchen auf Bing aus mit zufälligen Verzögerungen zwischen 3.000 und 8.000 Millisekunden. Exakt 60 Suchen werden durchgeführt.
 // @author       Redhead420
 // @match        *bing.com/*
